@@ -1,0 +1,522 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-28T07:14:13.723Z",
+  "title": "Design System: K8Q(QWAPP for Kubernetes)",
+  "extensions": {
+    "colorMeta": {
+      "bg": {
+        "role": "neutral",
+        "displayName": "云灰底 (Cloud Gray)",
+        "canonical": "#f4f5f7",
+        "darkValue": "#101216",
+        "tonalRamp": [
+          "#010101",
+          "#050505",
+          "#0e0e0e",
+          "#1e1f20",
+          "#38393b",
+          "#5f6062",
+          "#949597",
+          "#dbdbdb"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "纸白 (Paper White)",
+        "canonical": "#ffffff",
+        "darkValue": "#171a1f",
+        "tonalRamp": [
+          "#010101",
+          "#050505",
+          "#0e0e0e",
+          "#1f1f1f",
+          "#393939",
+          "#606060",
+          "#959595",
+          "#dbdbdb"
+        ]
+      },
+      "surface-2": {
+        "role": "neutral",
+        "displayName": "雾灰 (Mist Gray)",
+        "canonical": "#f6f7f9",
+        "darkValue": "#1e2229",
+        "tonalRamp": [
+          "#010101",
+          "#050505",
+          "#0e0e0e",
+          "#1e1f20",
+          "#38393b",
+          "#5f6062",
+          "#949597",
+          "#dbdbdb"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "发丝线 (Hairline)",
+        "canonical": "#e3e6ea",
+        "darkValue": "#282d36",
+        "tonalRamp": [
+          "#010101",
+          "#040505",
+          "#0d0e0f",
+          "#1d1f21",
+          "#37393d",
+          "#5d6064",
+          "#929599",
+          "#dbdbdb"
+        ]
+      },
+      "line-2": {
+        "role": "neutral",
+        "displayName": "深发丝线 (Deep Hairline)",
+        "canonical": "#d0d5dc",
+        "darkValue": "#363d48",
+        "tonalRamp": [
+          "#010101",
+          "#040505",
+          "#0d0e10",
+          "#1c1f23",
+          "#353a40",
+          "#5b6068",
+          "#90959d",
+          "#dbdbdb"
+        ]
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "石墨 (Graphite)",
+        "canonical": "#1b1e23",
+        "darkValue": "#e3e6ea",
+        "tonalRamp": [
+          "#010101",
+          "#040505",
+          "#0d0e10",
+          "#1c1f23",
+          "#363940",
+          "#5c6068",
+          "#91959c",
+          "#dbdbdb"
+        ]
+      },
+      "text-2": {
+        "role": "neutral",
+        "displayName": "钢灰 (Steel Gray)",
+        "canonical": "#57606b",
+        "darkValue": "#9aa4ae",
+        "tonalRamp": [
+          "#010101",
+          "#040506",
+          "#0b0e12",
+          "#1a1f27",
+          "#323a46",
+          "#56616f",
+          "#8c96a3",
+          "#dbdbdb"
+        ]
+      },
+      "text-3": {
+        "role": "neutral",
+        "displayName": "雾钢 (Fog Steel)",
+        "canonical": "#6b7480",
+        "darkValue": "#8b95a1",
+        "tonalRamp": [
+          "#010101",
+          "#040506",
+          "#0b0e12",
+          "#1a1f27",
+          "#323a46",
+          "#576170",
+          "#8c96a4",
+          "#dbdbdb"
+        ]
+      },
+      "brand": {
+        "role": "primary",
+        "displayName": "控制台蓝 (Console Blue)",
+        "canonical": "#2f5fd0",
+        "darkValue": "#5b8af0",
+        "tonalRamp": [
+          "#010101",
+          "#01031a",
+          "#020a4b",
+          "#06188f",
+          "#1132d7",
+          "#2a5bff",
+          "#5f94ff",
+          "#dbdbdb"
+        ]
+      },
+      "brand-weak": {
+        "role": "primary",
+        "displayName": "弱底蓝 (Console Blue Wash)",
+        "canonical": "#eef3fd",
+        "darkValue": "rgba(91, 138, 240, 0.14)",
+        "tonalRamp": [
+          "#010101",
+          "#040506",
+          "#0d0e11",
+          "#1c1f24",
+          "#353942",
+          "#5b606b",
+          "#90959f",
+          "#dbdbdb"
+        ]
+      },
+      "ok": {
+        "role": "status",
+        "displayName": "运行绿 (Ops Green)",
+        "canonical": "#15803d",
+        "darkValue": "#3fba6f",
+        "tonalRamp": [
+          "#010101",
+          "#000701",
+          "#001603",
+          "#002e09",
+          "#0a5017",
+          "#257d34",
+          "#5db16a",
+          "#dbdbdb"
+        ]
+      },
+      "ok-weak": {
+        "role": "status",
+        "displayName": "运行绿弱底 (Ops Green Wash)",
+        "canonical": "#eaf6ee",
+        "darkValue": "rgba(63, 186, 111, 0.12)",
+        "tonalRamp": [
+          "#010101",
+          "#040504",
+          "#0c0f0d",
+          "#1a211c",
+          "#323c36",
+          "#57645b",
+          "#8d9991",
+          "#dbdbdb"
+        ]
+      },
+      "warn": {
+        "role": "status",
+        "displayName": "琥珀 (Amber)",
+        "canonical": "#b45309",
+        "darkValue": "#e8a13d",
+        "tonalRamp": [
+          "#010101",
+          "#0f0200",
+          "#2c0500",
+          "#580d00",
+          "#8e2005",
+          "#c6431a",
+          "#f27b4e",
+          "#dbdbdb"
+        ]
+      },
+      "warn-weak": {
+        "role": "status",
+        "displayName": "琥珀弱底 (Amber Wash)",
+        "canonical": "#fbf1e2",
+        "darkValue": "rgba(232, 161, 61, 0.12)",
+        "tonalRamp": [
+          "#010101",
+          "#060503",
+          "#100d0a",
+          "#241e16",
+          "#41382c",
+          "#695e50",
+          "#9d9486",
+          "#dbdbdb"
+        ]
+      },
+      "err": {
+        "role": "status",
+        "displayName": "告警红 (Alert Red)",
+        "canonical": "#cf3226",
+        "darkValue": "#f06055",
+        "tonalRamp": [
+          "#010101",
+          "#150000",
+          "#3c0000",
+          "#760201",
+          "#ba0f0a",
+          "#fa2e21",
+          "#ff6855",
+          "#dbdbdb"
+        ]
+      },
+      "err-weak": {
+        "role": "status",
+        "displayName": "告警红弱底 (Alert Red Wash)",
+        "canonical": "#fcecea",
+        "darkValue": "rgba(240, 96, 85, 0.12)",
+        "tonalRamp": [
+          "#010101",
+          "#060404",
+          "#110d0c",
+          "#251c1b",
+          "#433634",
+          "#6d5c5a",
+          "#a1918f",
+          "#dbdbdb"
+        ]
+      },
+      "info": {
+        "role": "status",
+        "displayName": "信息蓝 (Info Blue)",
+        "canonical": "#2f5fd0",
+        "darkValue": "#5b8af0",
+        "tonalRamp": [
+          "#010101",
+          "#01031a",
+          "#020a4b",
+          "#06188f",
+          "#1132d7",
+          "#2a5bff",
+          "#5f94ff",
+          "#dbdbdb"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "headline": {
+        "displayName": "Headline / 页标题",
+        "purpose": "页面标题 17px/650,内嵌 mono 英文定位小标。"
+      },
+      "title": {
+        "displayName": "Title / 卡片标题",
+        "purpose": "卡片标题 13px/600;抽屉与弹窗标题 15px/650。"
+      },
+      "body": {
+        "displayName": "Body / 正文",
+        "purpose": "全局基准 13px/400/1.55,页面描述、消息体、表单。"
+      },
+      "label": {
+        "displayName": "Label / 标签",
+        "purpose": "表头与字段标签 11px/600;弱读数标签 400。"
+      },
+      "mono": {
+        "displayName": "Mono Data / 等宽读数",
+        "purpose": "代码、数据、度量,tabular-nums;metric 主值 19px/600。"
+      }
+    },
+    "shadows": [
+      {
+        "name": "shadow-pop",
+        "value": "0 2px 6px rgba(16, 24, 40, 0.08), 0 12px 32px rgba(16, 24, 40, 0.12)",
+        "purpose": "抽屉/弹窗/搜索浮层(亮色主题)。"
+      },
+      {
+        "name": "shadow-pop-dark",
+        "value": "0 2px 6px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.45)",
+        "purpose": "抽屉/弹窗/搜索浮层(暗色主题,更深以保证分离度)。"
+      },
+      {
+        "name": "ring-selected",
+        "value": "0 0 0 1px var(--brand)",
+        "purpose": "release-card 选中态的焦点环式描边,非投影抬升。"
+      },
+      {
+        "name": "mask-drawer",
+        "value": "rgba(16, 24, 40, 0.35)",
+        "purpose": "抽屉遮罩背景,双主题共用。"
+      },
+      {
+        "name": "mask-modal",
+        "value": "rgba(16, 24, 40, 0.4)",
+        "purpose": "弹窗遮罩背景,双主题共用。"
+      }
+    ],
+    "motion": [
+      {
+        "name": "fade-in",
+        "value": "0.15s ease",
+        "purpose": "遮罩淡入。"
+      },
+      {
+        "name": "drawer-in",
+        "value": "0.2s ease",
+        "purpose": "抽屉滑入(translateX(40px) + fade)。"
+      },
+      {
+        "name": "modal-in",
+        "value": "0.18s ease",
+        "purpose": "弹窗浮入(translateY(8px) + fade)。"
+      },
+      {
+        "name": "fill-width",
+        "value": "0.5s ease",
+        "purpose": "UtilBar/mini-bar/progress 填充宽度过渡。"
+      },
+      {
+        "name": "state",
+        "value": "0.12s ease",
+        "purpose": "hover/选中/边框等组件状态过渡的默认时长。"
+      },
+      {
+        "name": "theme",
+        "value": "0.2s ease",
+        "purpose": "body 背景与文字色随主题切换的过渡。"
+      },
+      {
+        "name": "blink",
+        "value": "0.9s step-end infinite",
+        "purpose": "聊天流式光标;全站唯一允许的循环动画。"
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "lg",
+        "value": "1280px",
+        "purpose": "dash-grid/dash-row 折单列,release-cards 两列,助手页侧栏收窄。"
+      },
+      {
+        "name": "md",
+        "value": "900px",
+        "purpose": "侧栏收成 54px 图标轨;metric-strip 横向滚动;抽屉全屏;助手页单栏。"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "主操作:应用变更、确认、发送。品牌实底,hover 仅亮度 +8%。",
+      "html": "<button class=\"ds-btn-primary\">应用变更</button>",
+      "css": ".ds-btn-primary { font-family: var(--font-ui); font-size: 12px; font-weight: 500; padding: 6px 12px; border-radius: 6px; border: 1px solid var(--brand); background: var(--brand); color: #fff; cursor: pointer; white-space: nowrap; transition: filter 0.12s; } .ds-btn-primary:hover { filter: brightness(1.08); } .ds-btn-primary:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; border-radius: 2px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "默认按钮:取消、次要操作。浅底细框,hover 转品牌色。",
+      "html": "<button class=\"ds-btn-secondary\">取消</button>",
+      "css": ".ds-btn-secondary { font-family: var(--font-ui); font-size: 12px; font-weight: 500; padding: 6px 12px; border-radius: 6px; border: 1px solid var(--line-2); background: var(--surface); color: var(--text); cursor: pointer; white-space: nowrap; transition: all 0.12s; } .ds-btn-secondary:hover { border-color: var(--brand); color: var(--brand); } .ds-btn-secondary:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; border-radius: 2px; }"
+    },
+    {
+      "name": "Danger Button",
+      "kind": "button",
+      "refersTo": "button-danger",
+      "description": "删除等破坏性操作。静态同默认按钮,hover 才显露红色语义。",
+      "html": "<button class=\"ds-btn-danger\">删除</button>",
+      "css": ".ds-btn-danger { font-family: var(--font-ui); font-size: 12px; font-weight: 500; padding: 6px 12px; border-radius: 6px; border: 1px solid var(--line-2); background: var(--surface); color: var(--text); cursor: pointer; white-space: nowrap; transition: all 0.12s; } .ds-btn-danger:hover { border-color: var(--err); color: var(--err); } .ds-btn-danger:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; border-radius: 2px; }"
+    },
+    {
+      "name": "Nav Item (active)",
+      "kind": "nav",
+      "refersTo": "nav-item-active",
+      "description": "侧栏导航项;选中为品牌弱底 + 品牌字,图标全不透明。",
+      "html": "<a class=\"ds-nav-item active\" href=\"#\"><svg width=\"15\" height=\"15\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\"><rect x=\"3\" y=\"3\" width=\"8\" height=\"8\" rx=\"1\"/><rect x=\"13\" y=\"3\" width=\"8\" height=\"5\" rx=\"1\"/><rect x=\"13\" y=\"10\" width=\"8\" height=\"11\" rx=\"1\"/><rect x=\"3\" y=\"13\" width=\"8\" height=\"8\" rx=\"1\"/></svg>集群总览<span class=\"ds-nav-en\">OVERVIEW</span></a>",
+      "css": ".ds-nav-item { display: flex; align-items: center; gap: 9px; padding: 7px 10px; border-radius: 6px; color: var(--text-2); text-decoration: none; font-family: var(--font-ui); font-size: 13px; font-weight: 500; transition: background 0.12s ease, color 0.12s ease; } .ds-nav-item svg { flex-shrink: 0; opacity: 0.75; } .ds-nav-item:hover { color: var(--text); background: var(--surface-2); } .ds-nav-item.active { color: var(--brand); background: var(--brand-weak); } .ds-nav-item.active svg { opacity: 1; } .ds-nav-en { margin-left: auto; font-family: var(--font-mono); font-size: 9px; color: var(--text-3); letter-spacing: 0.08em; }"
+    },
+    {
+      "name": "Tab (active)",
+      "kind": "nav",
+      "refersTo": "tab-active",
+      "description": "下划线式页签;激活为品牌字 + 2px 品牌下划线,计数为 mono 弱标。",
+      "html": "<div class=\"ds-tabs\"><button class=\"ds-tab\">无状态 Deployment<span class=\"ds-tab-count\">12</span></button><button class=\"ds-tab active\">有状态 StatefulSet<span class=\"ds-tab-count\">4</span></button></div>",
+      "css": ".ds-tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--line); } .ds-tab { padding: 7px 12px; background: none; border: none; color: var(--text-2); font-family: var(--font-ui); font-size: 12.5px; font-weight: 500; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.12s; } .ds-tab:hover { color: var(--text); } .ds-tab.active { color: var(--brand); border-bottom-color: var(--brand); } .ds-tab-count { font-family: var(--font-mono); font-size: 10px; color: var(--text-3); margin-left: 5px; }"
+    },
+    {
+      "name": "Status Pill",
+      "kind": "custom",
+      "description": "健康度表达:实色字 + 前置 6px 同色圆点;无语义不上色。",
+      "html": "<span class=\"ds-status-pill ok\"><span class=\"ds-dot\"></span>Ready</span> <span class=\"ds-status-pill warn\"><span class=\"ds-dot warn\"></span>Pending</span> <span class=\"ds-status-pill err\"><span class=\"ds-dot err\"></span>CrashLoopBackOff</span>",
+      "css": ".ds-status-pill { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-ui); font-size: 12px; white-space: nowrap; } .ds-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; } .ds-status-pill.ok { color: var(--ok); } .ds-status-pill.ok .ds-dot { background: var(--ok); } .ds-status-pill.warn { color: var(--warn); } .ds-status-pill.warn .ds-dot { background: var(--warn); } .ds-status-pill.err { color: var(--err); } .ds-status-pill.err .ds-dot { background: var(--err); }"
+    },
+    {
+      "name": "Event Tag",
+      "kind": "chip",
+      "refersTo": "tag-warn",
+      "description": "事件流类型标记:10px mono 弱底实字;normal 绿、warn 琥珀、err 红、info 蓝。",
+      "html": "<span class=\"ds-tag normal\">Normal</span> <span class=\"ds-tag warn\">Warning</span>",
+      "css": ".ds-tag { font-family: var(--font-mono); font-size: 10px; padding: 1px 6px; border-radius: 4px; display: inline-block; text-align: center; } .ds-tag.normal { color: var(--ok); background: var(--ok-weak); } .ds-tag.warn { color: var(--warn); background: var(--warn-weak); } .ds-tag.err { color: var(--err); background: var(--err-weak); } .ds-tag.info { color: var(--info); background: var(--brand-weak); }"
+    },
+    {
+      "name": "Metric Cell",
+      "kind": "custom",
+      "description": "metric-strip 单元:标签 → 19px 等宽主值 → mono 副读数,hairline 左分隔。",
+      "html": "<div class=\"ds-metric-cell\"><div class=\"ds-metric-label\">节点</div><div class=\"ds-metric-value\">5<span class=\"ds-metric-unit\">/ 6</span></div><div class=\"ds-metric-sub\">ready</div></div>",
+      "css": ".ds-metric-cell { padding: 10px 14px; border-left: 1px solid var(--line); min-width: 0; } .ds-metric-label { font-family: var(--font-ui); font-size: 11px; color: var(--text-3); white-space: nowrap; } .ds-metric-value { font-family: var(--font-mono); font-size: 19px; font-weight: 600; margin-top: 2px; font-variant-numeric: tabular-nums; } .ds-metric-unit { font-size: 11px; color: var(--text-3); font-weight: 400; margin-left: 2px; } .ds-metric-sub { font-family: var(--font-mono); font-size: 11px; color: var(--text-2); margin-top: 2px; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }"
+    },
+    {
+      "name": "Data Table",
+      "kind": "custom",
+      "description": "table.data:雾灰表头 + 发丝线行,行 hover 变底,数值列等宽对齐。",
+      "html": "<table class=\"ds-table\"><thead><tr><th>名称</th><th>就绪</th><th>状态</th></tr></thead><tbody><tr class=\"ds-clickable\"><td class=\"ds-name-cell\">payment-core</td><td class=\"ds-mono\">4/4</td><td><span class=\"ds-status-pill ok\"><span class=\"ds-dot\"></span>健康</span></td></tr></tbody></table>",
+      "css": ".ds-table { width: 100%; border-collapse: collapse; font-family: var(--font-ui); font-size: 12.5px; } .ds-table th { text-align: left; font-size: 11px; color: var(--text-3); font-weight: 600; padding: 7px 10px; border-bottom: 1px solid var(--line-2); background: var(--surface-2); white-space: nowrap; } .ds-table td { padding: 6px 10px; border-bottom: 1px solid var(--line); vertical-align: middle; } .ds-table tbody tr { transition: background 0.1s; } .ds-table tbody tr.ds-clickable { cursor: pointer; } .ds-table tbody tr:hover { background: var(--surface-2); } .ds-table .ds-mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; } .ds-name-cell { font-weight: 600; color: var(--text); }"
+    },
+    {
+      "name": "UtilBar",
+      "kind": "custom",
+      "description": "利用率条:6px 轨道,≥85 红、≥70 琥珀、否则绿;直角填充。",
+      "html": "<div class=\"ds-util-row\"><span class=\"ds-util-name\">node-1</span><span class=\"ds-util-track\"><span class=\"ds-util-fill\" style=\"width:72%\"></span></span><span class=\"ds-util-val\">72% / 16c</span></div>",
+      "css": ".ds-util-row { display: grid; grid-template-columns: 92px 1fr 108px; gap: 10px; align-items: center; padding: 4px 0; } .ds-util-name { font-family: var(--font-ui); font-size: 12px; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .ds-util-track { height: 6px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 3px; overflow: hidden; } .ds-util-fill { display: block; height: 100%; border-radius: 0; background: var(--ok); transition: width 0.5s ease; } .ds-util-fill.warn { background: var(--warn); } .ds-util-fill.err { background: var(--err); } .ds-util-val { font-family: var(--font-mono); font-size: 11px; color: var(--text-2); text-align: right; font-variant-numeric: tabular-nums; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "运维舰桥 (The Watch Bridge)",
+    "overview": "像一艘船的舰桥:仪表密集、每格读数都是真的、颜色只在报警时开口。K8Q 是企业运维与平台工程师的 Kubernetes 全生命周期工作台,设计的第一优先级是信息密度——运维打开控制台,要在一屏内读到节点水位、工作负载异常数与实时事件流,然后立刻动手操作。所有视觉决策都为扫读与定位异常服务,表现力让位给吞吐。\n视觉世界是企业云控制台形态(阿里云控制台 / Grafana 一类的工作产品):发丝线(hairline)切分、表格为主角、扁平表面、克制的品牌蓝。双主题服务真实场景——默认白底对应办公室白天,暗夜主题对应夜间值守(暗底上状态色整体提亮保证对比度)。已确认的视觉否决项(去 \"AI slop\"):无渐变网格背景、无发光、无玻璃拟态、无呼吸动画、无仪表盘模板式大数字卡片堆砌。",
+    "keyCharacteristics": [
+      "企业级、克制、精确;信息密度优先于表现力",
+      "表格与条带是主角,卡片是容器不是内容",
+      "状态色必须承载真实语义(绿=健康、琥珀=降级/进行中、红=异常、蓝=信息/品牌)",
+      "双主题:亮色为默认,暗色为提亮变体;所有颜色经由 CSS 变量切换",
+      "系统字体栈承担 UI,JetBrains Mono 只用于代码、数据、度量",
+      "扁平 + 发丝线;阴影只属于弹出层"
+    ],
+    "rules": [
+      {
+        "name": "状态色语义规则 (The Semantic Status Rule)",
+        "body": "绿=健康、琥珀=降级/进行中、红=异常、蓝=信息/品牌。颜色只在承载语义时出现,任何装饰性用色一律禁止;同一语义在全站共享同一对实色 + 弱底。",
+        "section": "colors"
+      },
+      {
+        "name": "品牌克制规则 (The One Voice Rule)",
+        "body": "品牌蓝只用于激活态、链接、主按钮与焦点;它是全站唯一的强调音,出现面积保持克制——它的稀缺即意义。",
+        "section": "colors"
+      },
+      {
+        "name": "等宽即数据规则 (The Mono Means Data Rule)",
+        "body": "等宽字体只服务于代码、数据、度量与元信息标识(英文小标、kbd、tag),不得用于标题或正文来制造\"技术感\"。",
+        "section": "typography"
+      },
+      {
+        "name": "静态扁平规则 (The Flat-By-Default Rule)",
+        "body": "表面在静止状态下零投影;阴影只作为\"浮出层级\"的响应(drawer/modal/浮层),hover 抬升、辉光、多层投影均被禁止。",
+        "section": "elevation"
+      },
+      {
+        "name": "表格主角规则 (The Table-First Rule)",
+        "body": "数据密集场景优先表格与条带;任何\"仪表盘模板式\"大数字卡片、图形化仪表盘、圆环读数都让位于 table.data 与 UtilBar/HBar 的线性表达。",
+        "section": "components"
+      },
+      {
+        "name": "小圆角纪律 (The Small Radius Rule)",
+        "body": "全站圆角不超过 10px;大圆角 pill、胶囊按钮与超大圆角卡片不属于这个世界。",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "用 metric-strip 呈现页面顶部度量:hairline 分列、19px 等宽 tabular-nums 主值、副读数承载异常着色。",
+      "用 1px 发丝线 + --surface/--surface-2 tonal 分层表达结构;阴影只给 drawer/modal/搜索浮层。",
+      "让数据表可扫读:名称列 600 字重、数值列 mono + tabular-nums、行 hover 变底、clickable 行配指针。",
+      "用 dot + status-pill + tag 表达状态,并保持语义一致:绿健康、琥珀进行中、红异常、蓝信息。",
+      "用 UtilBar/HBar/Sparkline 做全部数据图形,遵守 UtilBar 阈值配色与 HBar 品牌色规则。",
+      "在暗色主题中使用提亮的实色 + 半透明弱底(见双主题总表),保持对比度优先。",
+      "经 data-theme + k8q-theme localStorage 机制切换主题,新颜色一律进 :root / [data-theme='dark'] 两个 token 块。",
+      "让新页面遵循 1280px / 900px 断点折叠行为,并在 900px 下可用(图标轨、横向滚动条带、全屏抽屉)。"
+    ],
+    "donts": [
+      "用渐变网格背景、径向光晕、发光文字或发光边框;全站无 glow。",
+      "用玻璃拟态(backdrop-filter 模糊、半透明磨砂层)。",
+      "用呼吸动画、心跳脉冲、循环动画装饰状态(唯一允许的循环动画是聊天流式光标 blink)。",
+      "用 kicker/eyebrow 式标题点缀行;页标题内嵌 mono 英文小标是既有定位规范,不是 eyebrow,不要再叠加。",
+      "用 progress ring、gauge、donut 展示单一利用率读数——用 UtilBar/HBar 线性条替代。",
+      "把等宽字体用于标题、正文或任何\"技术感\"装饰;它只服务于代码、数据、度量。",
+      "给静态卡片、按钮加投影或 hover 抬升;不要多层投影。",
+      "使用超过 10px 的圆角、pill/胶囊形按钮、表情符号图标或插画式空态。",
+      "在组件内硬编码色值或新增 token 名;双主题必须同步维护亮/暗两组值。"
+    ]
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "manifestVersion": 2,
+  "appId": "io.kudig.k8q",
+  "name": "K8Q K8S 全生命周期工作台",
+  "version": "0.3.0",
+  "format": "qwapp-v3",
+  "description": "K8Q — QWAPP for Kubernetes。Kubernetes 全生命周期工作台的千问办公应用包:集群总览、工作负载管理(Pod 日志流、YAML 在线编辑与 Diff 应用)、全集群事件流、发布与回滚,以及由 QWAPP 驱动的 AI 运维助手。当前为 MVP 演示版本,集群数据为 mock。",
+  "author": "K8Q Team",
+  "permissions": [
+    "skills:execute",
+    "views:render"
+  ],
+  "mainAgent": {
+    "id": "k8q-ops-agent",
+    "version": "0.3.0",
+    "instructions": "instructions.md",
+    "capabilities": {
+      "tools": [
+        {
+          "name": "k8q_diagnose_pod",
+          "description": "诊断 Pod 故障(CrashLoopBackOff / OOMKilled / ImagePullBackOff),给出排查路径与修复 YAML"
+        },
+        {
+          "name": "k8q_generate_yaml",
+          "description": "生成生产可用的 Deployment / HPA / Service YAML 模板,带 probe、resources 与滚动策略默认值"
+        },
+        {
+          "name": "k8q_release_runbook",
+          "description": "输出发布前检查、发布中观察与安全回滚的操作手册"
+        }
+      ]
+    },
+    "presentation": {
+      "title": "K8Q 运维助手",
+      "description": "Kubernetes 全生命周期 copilot:故障诊断、YAML 生成、发布与回滚指导。配套 K8Q 工作台视图可实时查看集群(mock)状态。",
+      "suggestedPrompts": [
+        {
+          "id": "crashloop",
+          "label": "诊断 CrashLoopBackOff",
+          "prompt": "我的 Pod 一直在 CrashLoopBackOff,帮我诊断一下"
+        },
+        {
+          "id": "yaml-gen",
+          "label": "生成 Deployment YAML",
+          "prompt": "帮我生成一个生产可用的 Deployment YAML"
+        },
+        {
+          "id": "rollback",
+          "label": "安全回滚流程",
+          "prompt": "发布出问题了,怎么安全回滚?"
+        },
+        {
+          "id": "node-capacity",
+          "label": "节点扩容体检",
+          "prompt": "帮我看看节点水位,需要扩容吗?"
+        },
+        {
+          "id": "open-workbench",
+          "label": "打开 K8Q 工作台",
+          "prompt": "打开 K8Q 工作台视图,看集群总览"
+        }
+      ]
+    },
+    "skills": {
+      "directory": "skills"
+    },
+    "views": [
+      {
+        "viewId": "workbench",
+        "title": "K8Q 工作台",
+        "entry": "views/workbench.html"
+      }
+    ]
+  }
+}
