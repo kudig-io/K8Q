@@ -1,5 +1,5 @@
 export type WorkloadKind = 'Deployment' | 'StatefulSet' | 'DaemonSet' | 'CronJob'
-export type PodPhase = 'Running' | 'Pending' | 'Failed' | 'CrashLoopBackOff' | 'Succeeded'
+export type PodPhase = 'Running' | 'Pending' | 'Failed' | 'CrashLoopBackOff' | 'Succeeded' | 'Terminating'
 
 export interface Cluster {
   id: string
@@ -42,8 +42,14 @@ export interface Workload {
   image: string
   ageMin: number
   status: 'Healthy' | 'Degraded' | 'Progressing'
+  labels: Record<string, string>
   annotations: Record<string, string>
   pods: PodInfo[]
+  /** CronJob 专有:调度表达式与挂起状态 */
+  schedule?: string
+  suspend?: boolean
+  /** 控制器专有:rollout 历史(新 revision 在前) */
+  revisions?: Revision[]
 }
 
 export interface KEvent {

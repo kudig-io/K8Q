@@ -19,6 +19,16 @@ colors:
   err: "#cf3226"
   err-weak: "#fcecea"
   info: "#2f5fd0"
+  on-brand: "#ffffff"
+  overlay: "rgba(16, 24, 40, 0.4)"
+  overlay-soft: "rgba(16, 24, 40, 0.35)"
+  term-bg: "#14171c"
+  term-line: "#2a2f38"
+  term-text: "#c9d1d9"
+  term-ts: "#5c6672"
+  term-info: "#58a6ff"
+  term-warn: "#e8a13d"
+  term-err: "#f06055"
 typography:
   headline:
     fontFamily: "-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Segoe UI', sans-serif"
@@ -36,6 +46,34 @@ typography:
   label:
     fontFamily: "-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Segoe UI', sans-serif"
     fontSize: "11px"
+    fontWeight: 600
+  dense:
+    fontFamily: "-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Segoe UI', sans-serif"
+    fontSize: "12px"
+    fontWeight: 500
+  table:
+    fontFamily: "-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Segoe UI', sans-serif"
+    fontSize: "12.5px"
+    fontWeight: 400
+  subhead:
+    fontFamily: "-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Segoe UI', sans-serif"
+    fontSize: "15px"
+    fontWeight: 650
+  logo:
+    fontFamily: "-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Segoe UI', sans-serif"
+    fontSize: "16px"
+    fontWeight: 700
+  meta:
+    fontFamily: "-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Segoe UI', sans-serif"
+    fontSize: "10px"
+    fontWeight: 400
+  micro:
+    fontFamily: "'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace"
+    fontSize: "9px"
+    fontWeight: 400
+  metric:
+    fontFamily: "'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace"
+    fontSize: "19px"
     fontWeight: 600
   mono:
     fontFamily: "'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace"
@@ -140,6 +178,11 @@ components:
 - **琥珀 (Amber)**(`#b45309`,暗 `#e8a13d`):降级 / Pending / 进行中(滚动发布、滚动更新进度),弱底 `#fbf1e2`(暗 `rgba(232, 161, 61, 0.12)`)。
 - **告警红 (Alert Red)**(`#cf3226`,暗 `#f06055`):异常 / CrashLoopBackOff / Failed / 删除,弱底 `#fcecea`(暗 `rgba(240, 96, 85, 0.12)`)。
 
+### Overlay & Terminal
+- **遮罩 (Overlay)**(`--overlay` / `--overlay-soft`):弹窗与抽屉遮罩;亮色为偏冷灰黑 `rgba(16, 24, 40, 0.4/0.35)`,暗色加深为 `rgba(0, 0, 0, 0.5/0.4)`。
+- **日志终端 (Terminal)**(`--term-bg` `#14171c`、`--term-line` `#2a2f38`、`--term-text` `#c9d1d9`、`--term-ts` `#5c6672`、`--term-info` `#58a6ff`、`--term-warn` `#e8a13d`、`--term-err` `#f06055`):日志面板是唯一常暗表面,两套主题共用同一组值,保证日志可读性与终端语义。
+- **品牌前景 (On Brand)**(`--on-brand` `#ffffff`):实底品牌按钮与用户消息气泡上的文字色。
+
 ### 双主题 Token 总表(唯一事实来源:`src/styles.css` 的 `:root` 与 `[data-theme='dark']`)
 
 | Token | 亮色(默认) | 暗色 |
@@ -161,6 +204,17 @@ components:
 | `--err` | `#cf3226` | `#f06055` |
 | `--err-weak` | `#fcecea` | `rgba(240, 96, 85, 0.12)` |
 | `--info` | `#2f5fd0` | `#5b8af0` |
+| `--on-brand` | `#ffffff` | `#ffffff` |
+| `--overlay` | `rgba(16, 24, 40, 0.4)` | `rgba(0, 0, 0, 0.5)` |
+| `--overlay-soft` | `rgba(16, 24, 40, 0.35)` | `rgba(0, 0, 0, 0.4)` |
+| `--term-bg` | `#14171c` | `#14171c` |
+| `--term-line` | `#2a2f38` | `#2a2f38` |
+| `--term-text` | `#c9d1d9` | `#c9d1d9` |
+| `--term-ts` | `#5c6672` | `#5c6672` |
+| `--term-info` | `#58a6ff` | `#58a6ff` |
+| `--term-warn` | `#e8a13d` | `#e8a13d` |
+| `--term-err` | `#f06055` | `#f06055` |
+| `--nav-width` | `228px` | `228px` |
 | `--shadow-pop` | `0 2px 6px rgba(16, 24, 40, 0.08), 0 12px 32px rgba(16, 24, 40, 0.12)` | `0 2px 6px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.45)` |
 | `--font-ui` | `-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Segoe UI', sans-serif` | (同亮色) |
 | `--font-mono` | `'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace` | (同亮色) |
@@ -180,9 +234,15 @@ components:
 
 ### Hierarchy
 - **Headline**(650,17px):页标题 `.page-title`,右侧内嵌 mono 英文小标(10px, `--text-3`, letter-spacing 0.1em)作为导航定位,而非装饰。
-- **Title**(600,13px):卡片标题 `.card-title`;抽屉/弹窗标题为 15px/650。
+- **Subhead**(650,15px):抽屉/弹窗标题。
+- **Title**(600,13px):卡片标题 `.card-title`;发布卡名 13.5px/650。
 - **Body**(400,13px / 1.55):全局基准,页面描述、消息体、表单。
-- **Label**(600,11px):表头、字段标签;弱读数标签为 400,11px(`--text-3`)。
+- **Table**(400,12.5px):数据表正文与列表导航项,控制台的主力字号。
+- **Dense**(500,12px):按钮、状态胶囊、事件流行、分段控件、表单标签——需要比正文更紧的控制件。
+- **Label**(600,11px):表头、字段标签、metric 标签;弱读数标签为 400,11px(`--text-3`)。
+- **Meta**(400,10px):mono 定位小标、kbd、tag、导航计数。
+- **Micro**(400,9px):导航英文小标、`⌘K` 等最小定位标记。
+- **Logo**(700,16px):品牌字标。
 - **Mono Data**(600,11–19px,tabular-nums):metric 主值 19px;代码 11–12.5px;时间戳/读数 10–11.5px。
 
 ### Named Rules
@@ -190,7 +250,13 @@ components:
 
 ## Layout
 
-应用骨架为固定左右结构:左侧 **208px** 白色导航轨(logo 区 + 分组导航 + 底部版本信息),右侧主列 = **50px** 顶栏(集群选择器、搜索、QWAPP 状态、主题切换、时钟)+ 滚动内容区(padding `18px 22px 36px`)。内容区节奏:页标题 → 页描述 → 主体。栅格:g gap 统一 **14px**;`dash-grid` 为 `1.5fr 1fr`,`dash-row` 三列 `1fr 1fr 1fr`,`release-cards` 三列;助手页三栏 `230px 1fr 250px`。密度基调:正文字号 13px,表格单元格 padding `6px 10px`,主字号区间 11–13px。
+应用骨架为固定左右结构:左侧 **228px** 白色单轨导航(`--nav-width`;logo 区 + 可滚动的分组资源导航 + 底部「创建资源」与版本信息),右侧主列 = **50px** 顶栏(数据源、集群、命名空间、全局资源搜索、QWAPP 状态、主题、时钟)+ 滚动内容区(padding `18px 22px 36px`)。内容区节奏:页头(`page-head`:标题 + mono 英文定位 + 描述 + 右侧主操作)→ 工具条 → 表格/主体。
+
+**单轨导航是唯一导航面。** 资源浏览器不再有第二棵树:集群总览、事件流、35 种 Kubernetes 资源与交付/AI 页全部按分组收进左侧栏。分组可折叠,当前页所在分组自动展开并把激活项滚入视口;展开状态持久化到 `k8q.nav.expanded`。分组顺序按 kubectl 使用习惯(概览 → 工作负载 → 网络 → 配置 → 存储 → 集群 → 安全与 RBAC → 自定义资源 → 交付),每种资源显示当前命名空间内的对象计数。
+
+名单页使用独立滚动的表格容器(`table-card`):表头吸顶、单元格不换行、横向可滚、`max-height: calc(100vh - 220px)`;事件页因顶部有 metric-strip 使用 `short` 变体。
+
+栅格:g gap 统一 **14px**;`dash-grid` 为 `1.5fr 1fr`,`dash-row` 三列 `1fr 1fr 1fr`,`release-cards` 三列;助手页三栏 `230px 1fr 250px`。密度基调:正文字号 13px,表格正文 12.5px、单元格 padding `6px 10px`,导航项 12.5px。
 
 ### 主题切换机制
 - 写入:`index.html` `<head>` 内联脚本在首帧前执行 `document.documentElement.dataset.theme = localStorage.getItem('k8q-theme') || 'light'`,防止暗色用户刷新时白屏闪烁。
@@ -198,9 +264,12 @@ components:
 - 过渡:`body` 上 `background 0.2s ease, color 0.2s ease`;组件级 hover/过渡统一 0.12s。
 - 契约:全部颜色必须经 CSS 变量消费,严禁在组件内硬编码色值,否则切换失效。
 
-### 响应式断点(唯二断点,`src/styles.css` 底部)
+### 响应式断点(四档,`src/styles.css` 底部)
 - **≤1280px**:`.dash-grid`、`.dash-row` 折叠为单列;`.release-cards` 变两列;助手页侧栏收窄为 `190px 1fr 210px`。
-- **≤900px**:侧栏收成 **54px** 图标轨(隐藏 logo 文字、分组名、英文小标、底部信息);顶栏收紧(padding `0 12px`,隐藏 mono 时钟与搜索框 `⌘K` 提示,搜索框占满);`.metric-strip` 变水平滚动(`grid-auto-columns: minmax(132px, 1fr)`);`.release-cards` 单列;助手页单栏并隐藏左右卡片,聊天面板高度 `calc(100vh - 240px)`;抽屉全屏(`width: 100vw`);表格字号降为 12px;内容区 padding `14px 14px 30px`。
+- **≤1180px**:顶栏隐藏同步状态、mono 时钟与 QWAPP 状态胶囊,把宽度让给资源搜索。
+- **≤1100px**:总览页 7 项 `metric-strip.seven` 改为 4 列换行(4+3),避免最后一项被裁切;其余 5 项条带保持单行。
+- **≤900px**:侧栏退出文档流变成 **264px 抽屉**(`translateX(-100%)`,由顶栏汉堡按钮开关,遮罩 `--overlay-soft`);`.release-cards` 单列;助手页单栏并隐藏左右卡片;抽屉全屏(`width: 100vw`);表格容器取消内部滚动,由页面滚动;内容区 padding `14px 14px 30px`。
+- **≤640px**:顶栏改为两行(第一行汉堡 + 数据源 + 命名空间 + 主题,第二行整宽搜索);隐藏 mock 集群选择器;`metric-strip.seven` 变 2 列;总览卡片内的表格改为卡片内横向滚动;工具条输入占满;隐藏页标题英文小标。
 
 ## Elevation & Depth
 
@@ -215,7 +284,7 @@ components:
 
 ## Shapes
 
-形态语言:小圆角 + 发丝线,工具感。圆角分级(实测值):微轨 **3px**(util/hbar/mini-bar/progress 轨道)、小组件 **4px**(tag、kbd、滚动条 thumb、搜索命中)、交互件 **6px**(按钮、输入、导航项、图标按钮、卡片内小组件)、容器 **8px**(卡片、metric-strip、搜索浮层、聊天气泡)、弹窗 **10px**(modal 上限)。填充条一律直角(`border-radius: 0`),轨道圆角包裹。焦点环:2px 实色 `var(--brand)` + 1px offset + 2px 圆角(`:focus-visible`),全站唯一焦点表达。
+形态语言:小圆角 + 发丝线,工具感。圆角分级(实测值):微轨 **3px**(util/hbar/mini-bar/progress 轨道)、小组件 **4px**(tag、kbd、滚动条 thumb、搜索命中)、交互件 **6px**(按钮、输入、导航项、图标按钮、卡片内小组件)、容器 **8px**(卡片、metric-strip、搜索浮层、聊天气泡)、弹窗 **10px**(modal 上限)。填充条一律直角(`border-radius: 0`),轨道圆角包裹。焦点环:2px 实色 `var(--brand)` + 1px offset + 3px 圆角(`:focus-visible`),全站唯一焦点表达。
 
 ### Named Rules
 **小圆角纪律 (The Small Radius Rule).** 全站圆角不超过 10px;大圆角 pill、胶囊按钮与超大圆角卡片不属于这个世界。
@@ -229,9 +298,11 @@ components:
 - **Danger:** 视觉同 Secondary,hover 时边框与字色转 `--err`。
 - **状态:** `:disabled` 透明度 0.5 + `not-allowed`;所有状态过渡 0.12s。
 
-### Navigation(侧栏 + 顶栏)
-- 侧栏导航项:6px 圆角,padding `7px 10px`,500 字重,图标 15px(0.75 透明度);hover 为 `--surface-2` 底 + `--text` 字;active 为 `--brand-weak` 底 + `--brand` 字 + 图标全不透明。右侧英文小标(`--font-mono`, 9px)仅作定位。
-- 顶栏:50px 高,`--surface` 底 + 底部发丝线;集群选择器与搜索框为 6px 圆角输入形态;图标按钮 28×28、6px 圆角,hover 转品牌色。
+### Navigation(单轨侧栏 + 顶栏)
+- **分组头**(`.nav-group-head`):chevron 10px + 分组图标 15px + 中文名 12px/600 + 右侧英文小标(9px mono);行高约 30px,6px 圆角,hover `--surface-2`;当前分组图标转 `--brand`,文字转 `--text`。点击只折叠/展开,不导航。
+- **资源项**(`.nav-item`):padding `5px 8px 5px 39px`(与分组中文名对齐),12.5px/500;右侧对象计数 10px mono、tabular-nums、`--text-3`;hover `--surface-2`;active `--brand-weak` 底 + `--brand` 字 + 计数转品牌色。资源项不配图标——K8s 资源种类多,图标只会变成噪音。
+- **侧栏底部**:全宽 `创建资源` 主按钮(6px 圆角、品牌实底)+ 版本/数据源 mono 元信息。
+- **顶栏**:50px 高,`--surface` 底 + 底部发丝线;数据源/集群/命名空间为 6px 圆角选择器(集群级资源页禁用命名空间选择);全局搜索支持 `⌘K`、↑/↓ 选择、Enter 跳转;图标按钮 28×28、6px 圆角,hover 转品牌色。
 
 ### Cards / Containers
 - **Corner:** 8px;**Background:** `--surface`;**Border:** 1px `--line`;**Shadow:** 无(见 Elevation);**Padding:** `14px 16px`;卡片标题 13px/600 + mono 灰色小标。表格容器卡片可 `padding: 0 + overflow: hidden` 收边。
@@ -243,6 +314,7 @@ components:
 
 ### Data Table(table.data,主角)
 - 12.5px 正文,表头 11px/600、`--text-3`、`--surface-2` 底、底部 `--line-2` 分隔;单元格 padding `7px 10px`(td 6px);行底 `--line` 发丝线,末行无线;行 hover `--surface-2`,`tr.clickable` 配指针。
+- 名单页把表格放进 `.table-card`:容器独立滚动、`thead th` 吸顶(`position: sticky; top: 0`)、单元格默认 `white-space: nowrap`,需要换行的消息列显式加 `.wrap`;长表配横向滚动,不挤压页面。
 - 列语言:名称列 `name-cell`(600 + 深色),资源名/命名空间/数值列 mono + tabular-nums,弱化列 `dim`,镜像列限宽省略;就绪列按 `ready/replicas` 是否相等着 `--ok`/`--warn`;重启数 > 10 着 `--err`;空态为居中弱化文案行。
 
 ### Tabs
@@ -273,7 +345,8 @@ components:
 - **mini-bar / progress-track:** 5–6px 高微轨;mini-bar 完成态 `--ok`、滚动中 `--warn`(rolling);progress-fill 恒 `--warn`(仅用于进行中)。禁用 gauge/donut/ring。
 
 ### Search(顶栏)
-- 搜索框 `--surface-2` 底 + 1px `--line`,focus 边框转 `--brand` 并变白底;`⌘K` 提示为 4px 圆角 mono kbd;命中浮层 8px 圆角 + shadow-pop,命中项 hover `--brand-weak`,`⌘K` 聚焦 / Esc 关闭。
+- 搜索框 `--surface-2` 底 + 1px `--line`,focus 边框转 `--brand` 并变白底;`⌘K` 提示为 4px 圆角 mono kbd。
+- 命中浮层 8px 圆角 + shadow-pop,跨全部资源类型(富工作负载 + 注册表内全部对象),按「名称精确 → 名称前缀 → 名称包含 → 镜像包含」排序;命中项 hover/键盘选中 `--brand-weak`,`⌘K` 聚焦 / ↑↓ 选择 / Enter 跳转 / Esc 关闭。名称单行省略,右侧 mono 显示 `Kind · namespace`。
 
 ### Chat(助手页)
 - 消息气泡:用户 `--brand` 底 + `#fff` 字(右下角 3px 削角),助手 `--surface-2` 底 + 1px `--line`(左下角削角);代码块 `--surface` 底 + `--line-2` 框,行内 code 为 `--brand-weak` 底 + `--brand` 字;流式光标为 6×13px `--brand` 竖条 blink 0.9s。
@@ -284,6 +357,7 @@ components:
 ## Do's and Don'ts
 
 ### Do:
+- **Do** 把每种资源都做成左侧单轨导航的一等入口;分组可折叠,当前分组自动展开,激活项滚入视口。
 - **Do** 用 `metric-strip` 呈现页面顶部度量:hairline 分列、19px 等宽 tabular-nums 主值、副读数承载异常着色。
 - **Do** 用 1px 发丝线 + `--surface`/`--surface-2` tonal 分层表达结构;阴影只给 drawer/modal/搜索浮层。
 - **Do** 让数据表可扫读:名称列 600 字重、数值列 mono + tabular-nums、行 hover 变底、`clickable` 行配指针。
@@ -294,6 +368,7 @@ components:
 - **Do** 让新页面遵循 1280px / 900px 断点折叠行为,并在 900px 下可用(图标轨、横向滚动条带、全屏抽屉)。
 
 ### Don't:
+- **Don't** 在内容区再放一棵资源导航树或第二套侧栏;资源切换只发生在左侧单轨导航与全局搜索里。
 - **Don't** 用渐变网格背景、径向光晕、发光文字或发光边框;全站无 glow。
 - **Don't** 用玻璃拟态(backdrop-filter 模糊、半透明磨砂层)。
 - **Don't** 用呼吸动画、心跳脉冲、循环动画装饰状态(唯一允许的循环动画是聊天流式光标 blink)。

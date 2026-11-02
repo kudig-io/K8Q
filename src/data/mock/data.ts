@@ -1,4 +1,4 @@
-import type { Cluster, KEvent, NodeInfo, PodInfo, Release, Workload } from '../types'
+import type { Cluster, KEvent, NodeInfo, PodInfo, Release, Workload } from '../../types'
 import { pick, rand, randInt, uid } from './seed'
 
 export const clusters: Cluster[] = [
@@ -7,7 +7,9 @@ export const clusters: Cluster[] = [
   { id: 'cls-edge-sg', name: 'edge-sg', version: 'v1.28.9', region: '新加坡', provider: 'ACK Edge' },
 ]
 
-const namespaces = ['default', 'kube-system', 'payment', 'search', 'middleware', 'observability', 'ingress']
+export const NAMESPACES = ['default', 'kube-system', 'prod-a', 'prod-b', 'monitoring']
+
+const namespaces = NAMESPACES
 
 const appNames = [
   'gateway-api', 'user-center', 'order-service', 'payment-core', 'risk-engine',
@@ -80,6 +82,15 @@ export function buildClusterState(clusterIdx: number) {
     const replicas = kind === 'CronJob' ? 0 : kind === 'DaemonSet' ? nodes.filter(n => !n.roles.includes('control-plane')).length : randInt(2, 8)
     const degraded = rand() > 0.82 && replicas > 0
     const ready = degraded ? Math.max(0, replicas - randInt(1, 2)) : replicas
+    const team = pick(['sre', 'payment', 'search', 'platform'])
+    const revs = kind === 'CronJob' ? 0 : randInt(3, 6)
+    const revisions = Array.from({ length: revs }, (_, r) => ({
+      revision: revs - r,
+      imageTag: `v${randInt(1, 5)}.${randInt(0, 20)}.${randInt(0, 9)}`,
+      deployedAt: Date.now() - (r + 1) * randInt(3600_000 * 8, 86400_000 * 4),
+      operator: pick(['allen.galler', 'ci-bot', 'ops.zhang', 'sre.li']),
+      note: pick(['常规发布', 'hotfix: 修复空指针', '灰度转正', '性能优化上线', '依赖升级', '配置变更同步']),
+    }))
     workloads.push({
       id: uid(),
       kind: kind as Workload['kind'],
@@ -90,8 +101,12 @@ export function buildClusterState(clusterIdx: number) {
       image: images[i % images.length],
       ageMin: randInt(60, 60 * 24 * 90),
       status: degraded ? 'Degraded' : rand() > 0.9 ? 'Progressing' : 'Healthy',
-      annotations: { 'k8q.io/team': pick(['sre', 'payment', 'search', 'platform']) },
+      labels: { app: name, tier: pick(['frontend', 'backend', 'backend', 'infra']), team, env: 'prod' },
+      annotations: { 'k8q.io/team': team },
       pods: makePods(name, namespace, Math.max(replicas, 1), ready, nodes),
+      ...(kind === 'CronJob'
+        ? { schedule: pick(['*/15 * * * *', '*/5 * * * *', '0 * * * *', '30 2 * * *']), suspend: rand() > 0.85 }
+        : { revisions }),
     })
   }
   const releases: Release[] = workloads

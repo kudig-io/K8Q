@@ -5,12 +5,21 @@ const out = '/tmp/k8q-shots'
 const browser = await chromium.launch()
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } })
 
-const routes = ['dashboard', 'workloads', 'assistant', 'releases']
-for (const r of routes) {
-  await page.goto(`${base}/#/${r}`)
-  await page.waitForTimeout(3200)
-  await page.screenshot({ path: `${out}/${r}.png` })
-  console.log('shot', r)
+const routes = [
+  ['dashboard', '/dashboard'],
+  ['workloads', '/explorer?group=workloads&kind=Deployment'],
+  ['pods', '/explorer?gvk=%2Fv1%2FPod'],
+  ['services', '/explorer?gvk=%2Fv1%2FService'],
+  ['nodes', '/explorer?gvk=%2Fv1%2FNode'],
+  ['events', '/events'],
+  ['assistant', '/assistant'],
+  ['releases', '/releases'],
+]
+for (const [name, path] of routes) {
+  await page.goto(`${base}/#${path}`)
+  await page.waitForTimeout(1800)
+  await page.screenshot({ path: `${out}/${name}.png` })
+  console.log('shot', name)
 }
 
 // workload drawer + yaml tab

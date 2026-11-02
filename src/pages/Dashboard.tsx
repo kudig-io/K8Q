@@ -1,11 +1,10 @@
 import { HBar, Sparkline, UtilBar } from '../components/charts'
 import { relTime } from '../components/common'
-import { current, useStore } from '../mock/store'
+import { useSourceData } from '../data/dataSource'
 
 export default function Dashboard() {
-  useStore(s => s.perCluster[s.clusters[s.activeCluster].id].events.length)
-  const cluster = useStore(s => s.clusters[s.activeCluster])
-  const { nodes, workloads, events, metrics } = current()
+  const src = useSourceData()
+  const { nodes, workloads, events, metricsHistory } = src
 
   const allPods = workloads.flatMap(w => w.pods)
   const running = allPods.filter(p => p.phase === 'Running' || p.phase === 'Succeeded').length
@@ -18,8 +17,8 @@ export default function Dashboard() {
   const memTotal = nodes.reduce((a, n) => a + n.memCapacity, 0)
   const cpuUsed = nodes.reduce((a, n) => a + n.cpuCapacity * n.cpuUsed, 0)
   const memUsed = nodes.reduce((a, n) => a + n.memCapacity * n.memUsed, 0)
-  const cpuPct = (cpuUsed / cpuTotal) * 100
-  const memPct = (memUsed / memTotal) * 100
+  const cpuPct = cpuTotal ? (cpuUsed / cpuTotal) * 100 : 0
+  const memPct = memTotal ? (memUsed / memTotal) * 100 : 0
   const degraded = workloads.filter(w => w.status === 'Degraded').length
   const warnCount = events.filter(e => e.type === 'Warning').length
   const restartTotal = allPods.reduce((a, p) => a + p.restarts, 0)
@@ -36,14 +35,24 @@ export default function Dashboard() {
     { label: 'Failed', count: failed, cls: 'err' as const },
   ]
 
+  const lastPoint = metricsHistory[metricsHistory.length - 1]
+  const desc = src.mode === 'cluster'
+    ? `${src.context} · metrics.k8s.io · 每 5s 轮询同步 · 上次同步 ${src.lastSyncTs ? relTime(src.lastSyncTs) : '—'}`
+    : 'prod-east · ACK · 华东1(杭州) · Kubernetes v1.30.4 · 数据每 3.5s 刷新(mock)'
+
   return (
     <div>
-      <h1 className="page-title">集群总览 <span className="en">CLUSTER OVERVIEW</span></h1>
-      <p className="page-desc">
-        {cluster.name} · {cluster.provider} · {cluster.region} · Kubernetes {cluster.version} · 数据每 3.5s 刷新(mock)
-      </p>
+      <header className="page-head">
+        <div>
+          <h1 className="page-title">
+            集群总览 <span className="en">CLUSTER OVERVIEW</span>
+            {src.mode === 'cluster' && <span className="tag normal" style={{ marginLeft: 8 }}>真实集群</span>}
+          </h1>
+          <p className="page-desc">{desc}</p>
+        </div>
+      </header>
 
-      <div className="metric-strip">
+      <div className="metric-strip seven">
         <div className="metric-cell">
           <div className="metric-label">节点</div>
           <div className="metric-value">{nodesReady}<span className="unit">/ {nodes.length}</span></div>
@@ -60,12 +69,12 @@ export default function Dashboard() {
           <div className="metric-sub" style={{ color: crash + failed ? 'var(--err)' : undefined }}>{crash + failed} 异常</div>
         </div>
         <div className="metric-cell">
-          <div className="metric-label">CPU 分配</div>
+          <div className="metric-label">CPU 使用</div>
           <div className="metric-value">{cpuPct.toFixed(1)}<span className="unit">%</span></div>
-          <div className="metric-sub">{cpuUsed.toFixed(0)} / {cpuTotal} cores</div>
+          <div className="metric-sub">{cpuUsed.toFixed(2)} / {cpuTotal} cores</div>
         </div>
         <div className="metric-cell">
-          <div className="metric-label">内存分配</div>
+          <div className="metric-label">内存使用</div>
           <div className="metric-value">{memPct.toFixed(1)}<span className="unit">%</span></div>
           <div className="metric-sub">{memUsed.toFixed(0)} / {memTotal} GiB</div>
         </div>
@@ -75,7 +84,7 @@ export default function Dashboard() {
           <div className="metric-sub">restarts</div>
         </div>
         <div className="metric-cell">
-          <div className="metric-label">告警事件(4h)</div>
+          <div className="metric-label">告警事件(窗口)</div>
           <div className="metric-value" style={{ color: warnCount > 5 ? 'var(--warn)' : undefined }}>{warnCount}</div>
           <div className="metric-sub">Warning</div>
         </div>
@@ -93,10 +102,10 @@ export default function Dashboard() {
                 <tr key={n.name}>
                   <td className="mono name-cell" style={{ fontSize: 11.5 }}>{n.name}</td>
                   <td className="dim">{n.roles.join(', ')}</td>
-                  <td style={{ minWidth: 130 }}>
+                  <td style={{ minWidth: 158 }}>
                     <UtilBar name="" pct={n.cpuUsed * 100} detail={`${(n.cpuUsed * 100).toFixed(0)}% / ${n.cpuCapacity}c`} />
                   </td>
-                  <td style={{ minWidth: 130 }}>
+                  <td style={{ minWidth: 158 }}>
                     <UtilBar name="" pct={n.memUsed * 100} detail={`${(n.memUsed * 100).toFixed(0)}% / ${n.memCapacity}G`} />
                   </td>
                   <td>
@@ -106,6 +115,11 @@ export default function Dashboard() {
                   </td>
                 </tr>
               ))}
+              {nodes.length === 0 && (
+                <tr><td colSpan={5} className="dim" style={{ textAlign: 'center', padding: 24 }}>
+                  {src.mode === 'cluster' ? (src.status === 'error' ? `同步失败:${src.error ?? ''}` : '正在从集群同步节点…') : '无节点'}
+                </td></tr>
+              )}
             </tbody>
           </table>
         </div>
@@ -122,19 +136,26 @@ export default function Dashboard() {
                 </span>
               </div>
             ))}
+            {events.length === 0 && <div className="dim" style={{ padding: 24, textAlign: 'center' }}>暂无事件</div>}
           </div>
         </div>
       </div>
 
       <div className="dash-row">
         <div className="card">
-          <h4 className="card-title">容量趋势 <span className="sub">CPU / MEM · 48min</span></h4>
-          <div className="kv-strip">
-            <div className="kv"><span className="k" style={{ color: 'var(--brand)' }}>■ CPU</span><span className="v">{metrics[metrics.length - 1].cpu.toFixed(1)}%</span></div>
-            <div className="kv"><span className="k" style={{ color: 'var(--ok)' }}>■ MEM</span><span className="v">{metrics[metrics.length - 1].mem.toFixed(1)}%</span></div>
-          </div>
-          <Sparkline data={metrics} k="cpu" color="#2f5fd0" />
-          <Sparkline data={metrics} k="mem" color="#15803d" height={52} />
+          <h4 className="card-title">容量趋势 <span className="sub">CPU / MEM · {src.mode === 'cluster' ? 'metrics 轮询' : '48min'}</span></h4>
+          {lastPoint ? (
+            <>
+              <div className="kv-strip">
+                <div className="kv"><span className="k" style={{ color: 'var(--brand)' }}>■ CPU</span><span className="v">{lastPoint.cpu.toFixed(1)}%</span></div>
+                <div className="kv"><span className="k" style={{ color: 'var(--ok)' }}>■ MEM</span><span className="v">{lastPoint.mem.toFixed(1)}%</span></div>
+              </div>
+              <Sparkline data={metricsHistory} k="cpu" color="#2f5fd0" />
+              <Sparkline data={metricsHistory} k="mem" color="#15803d" height={52} />
+            </>
+          ) : (
+            <div className="dim" style={{ padding: 24, textAlign: 'center' }}>集群模式下随轮询逐步积累趋势点…</div>
+          )}
         </div>
 
         <div className="card">
@@ -165,6 +186,7 @@ export default function Dashboard() {
           {nsTop.map(([ns, n]) => (
             <HBar key={ns} name={ns} value={n} max={nsMax} label={`${n} pods`} />
           ))}
+          {nsTop.length === 0 && <div className="dim" style={{ padding: 16, textAlign: 'center' }}>暂无工作负载</div>}
           <h4 className="card-title" style={{ marginTop: 14 }}>命名空间事件 <span className="sub">WARNINGS</span></h4>
           {[...new Set(events.filter(e => e.type === 'Warning').map(e => e.namespace))].slice(0, 4).map(ns => (
             <div key={ns} className="kv-strip" style={{ padding: '3px 0' }}>
@@ -173,6 +195,7 @@ export default function Dashboard() {
               </span></div>
             </div>
           ))}
+          {events.filter(e => e.type === 'Warning').length === 0 && <div className="dim" style={{ padding: 8 }}>窗口内无 Warning</div>}
         </div>
       </div>
     </div>

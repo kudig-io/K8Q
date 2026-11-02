@@ -1,9 +1,20 @@
-import type { ReactNode } from 'react'
+import { useEffect, type ReactNode } from 'react'
 
-export function Modal({ title, onClose, children }: { title: string; onClose: () => void; children: ReactNode }) {
+function useEscape(onClose: () => void) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [onClose])
+}
+
+export function Modal({ title, onClose, wide, children }: { title: string; onClose: () => void; wide?: boolean; children: ReactNode }) {
+  useEscape(onClose)
   return (
     <div className="modal-mask" onClick={onClose}>
-      <div className="modal" onClick={e => e.stopPropagation()}>
+      <div className={`modal${wide ? ' wide' : ''}`} role="dialog" aria-modal="true" aria-label={title} onClick={e => e.stopPropagation()}>
         <h3>{title}</h3>
         {children}
       </div>
@@ -18,6 +29,7 @@ export function Drawer({ title, sub, onClose, actions, children }: {
   actions?: ReactNode
   children: ReactNode
 }) {
+  useEscape(onClose)
   return (
     <>
       <div className="drawer-mask" onClick={onClose} />

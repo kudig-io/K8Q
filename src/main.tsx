@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { HashRouter } from 'react-router-dom'
 import App from './App'
-import { startTicker } from './mock/store'
+import { startTicker } from './data/mock/store'
 import './styles.css'
 
 startTicker()

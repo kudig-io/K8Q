@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { relTime } from '../components/common'
-import { current, useStore } from '../mock/store'
+import { useSourceData } from '../data/dataSource'
 import type { KEvent } from '../types'
 
 function absTime(ts: number): string {
@@ -10,8 +10,8 @@ function absTime(ts: number): string {
 }
 
 export default function Events() {
-  useStore(s => s)
-  const live = current().events
+  const src = useSourceData()
+  const live = src.events
   const [paused, setPaused] = useState(false)
   const [frozen, setFrozen] = useState<KEvent[]>([])
   const [type, setType] = useState<'全部' | 'Warning' | 'Normal'>('全部')
@@ -58,8 +58,12 @@ export default function Events() {
 
   return (
     <div>
-      <h1 className="page-title">事件流 <span className="en">EVENT STREAM</span></h1>
-      <p className="page-desc">全集群 Kubernetes 事件实时聚合(mock),支持类型 / 命名空间 / 原因多维过滤</p>
+      <header className="page-head">
+        <div>
+          <h1 className="page-title">事件流 <span className="en">EVENT STREAM</span></h1>
+          <p className="page-desc">全集群 Kubernetes 事件实时聚合,支持类型 / 命名空间 / 原因多维过滤</p>
+        </div>
+      </header>
 
       <div className="metric-strip">
         <div className="metric-cell">
@@ -134,7 +138,7 @@ export default function Events() {
         </button>
       </div>
 
-      <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+      <div className="card table-card short">
         <table className="data">
           <thead>
             <tr>
@@ -160,12 +164,12 @@ export default function Events() {
                 <td className="mono" style={{ fontSize: 11.5, color: e.type === 'Warning' ? 'var(--warn)' : undefined }}>
                   {e.reason}
                 </td>
-                <td className="dim" style={{ fontSize: 12 }}>{e.message}</td>
+                <td className="dim wrap" style={{ fontSize: 12.5 }}>{e.message}</td>
               </tr>
             ))}
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={6} className="dim" style={{ textAlign: 'center', padding: 28 }}>
+                <td colSpan={6} className="dim table-empty">
                   没有匹配的事件 — 调整过滤条件
                 </td>
               </tr>

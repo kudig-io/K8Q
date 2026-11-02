@@ -21,7 +21,7 @@ export function Sparkline({ data, k, color, height = 72 }: { data: MetricPoint[]
 export function UtilBar({ name, pct, detail }: { name?: string; pct: number; detail: string }) {
   const cls = pct >= 85 ? 'err' : pct >= 70 ? 'warn' : 'ok'
   return (
-    <div className="util-row" style={name ? undefined : { gridTemplateColumns: '1fr 96px' }}>
+    <div className="util-row" style={name ? undefined : { gridTemplateColumns: '1fr 78px' }}>
       {name && <span className="util-name" title={name}>{name}</span>}
       <span className="util-track">
         <span className={`util-fill ${cls}`} style={{ width: `${Math.min(100, pct)}%` }} />

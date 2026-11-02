@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { Modal, relTime } from '../components/common'
-import { createApp, current, rollbackRelease, rolloutRelease, useStore } from '../mock/store'
-import type { NewAppInput } from '../mock/store'
+import { activeMode } from '../data/dataSource'
+import { createApp, current, rollbackRelease, rolloutRelease, useStore } from '../data/mock/store'
+import type { NewAppInput } from '../data/mock/store'
 import type { Release } from '../types'
 
 function Wizard({ onClose }: { onClose: () => void }) {
@@ -88,6 +89,7 @@ function Wizard({ onClose }: { onClose: () => void }) {
 export default function Releases() {
   useStore(s => s)
   const { releases } = current()
+  const srcMode = activeMode()
   const [selectedId, setSelectedId] = useState<string | null>(releases[0]?.id ?? null)
   const [wizardOpen, setWizardOpen] = useState(false)
   const [rollbackTarget, setRollbackTarget] = useState<number | null>(null)
@@ -98,11 +100,18 @@ export default function Releases() {
 
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 16 }}>
-        <h1 className="page-title" style={{ marginBottom: 4 }}>发布与生命周期 <span className="en">RELEASE LIFECYCLE</span></h1>
-        <button className="btn primary" style={{ marginLeft: 'auto' }} onClick={() => setWizardOpen(true)}>+ 新建应用</button>
-      </div>
-      <p className="page-desc">应用级视角的部署、滚动发布与回滚 · 进度与副本状态实时联动(mock)</p>
+      <header className="page-head">
+        <div>
+          <h1 className="page-title">
+            发布与生命周期 <span className="en">RELEASE LIFECYCLE</span>
+            {srcMode === 'cluster' && <span className="tag warn" style={{ marginLeft: 8 }}>演示数据 · Helm/Argo 域,不来自集群</span>}
+          </h1>
+          <p className="page-desc">应用级视角的部署、滚动发布与回滚 · 进度与副本状态实时联动</p>
+        </div>
+        <div className="page-actions">
+          <button className="btn primary" onClick={() => setWizardOpen(true)}>＋ 新建应用</button>
+        </div>
+      </header>
 
       <div className="release-cards">
         {releases.map(r => {

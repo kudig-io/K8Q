@@ -4,14 +4,54 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>K8Q · QWAPP for Kubernetes</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
     <script>
-      document.documentElement.dataset.theme = localStorage.getItem('k8q-theme') || 'light'
+      document.documentElement.dataset.theme =
+        localStorage.getItem('k8q-theme') ||
+        new URLSearchParams(location.search).get('theme') ||
+        'light'
+    </script>
+    <script>
+      // QwenWork UI bridge(qwenwork.ui-bridge/v1):视图挂载握手
+      // 宿主 wrapper 等待视图主动 hello,否则 QWAPP_UI_BRIDGE_HANDSHAKE_TIMEOUT
+      ;(function () {
+        if (!window.parent || window.parent === window) return
+        var PROTO = 'qwenwork.ui-bridge/v1'
+        function uuid() {
+          return window.crypto && crypto.randomUUID
+            ? crypto.randomUUID()
+            : 'qwapp-channel-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 12)
+        }
+        window.__k8qBridge = { ready: false, metadata: null }
+        function hello() {
+          var requestId = uuid()
+          window.parent.postMessage(
+            {
+              protocol: PROTO,
+              version: 1,
+              kind: 'hello',
+              requestId: requestId,
+              appId: 'io.kudig.k8q',
+              viewId: 'main',
+              sdkVersion: '1.0.0',
+            },
+            '*',
+          )
+        }
+        window.addEventListener('message', function (e) {
+          var d = e.data
+          if (d && d.protocol === PROTO && d.kind === 'ready') {
+            window.__k8qBridge.ready = !!d.ok
+            window.__k8qBridge.metadata = d.value || d.error || null
+          }
+        })
+        // wrapper 的 message 监听注册时机不保证,周期性重发直到 ready
+        var n = 0
+        var timer = setInterval(function () {
+          if (window.__k8qBridge.ready || ++n > 20) return clearInterval(timer)
+          hello()
+        }, 400)
+        hello()
+      })()
     </script>
   </head>
   <body>

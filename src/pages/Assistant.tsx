@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { qwapp } from '../ai/qwapp'
-import { current, useStore } from '../mock/store'
+import { current, useStore } from '../data/mock/store'
 import type { ChatMessage, ChatSession } from '../types'
-import { uid } from '../mock/seed'
+import { uid } from '../data/mock/seed'
 
 function renderInline(text: string, keyPrefix: string) {
   const parts = text.split(/(`[^`]+`|\*\*[^*]+\*\*)/g)
@@ -128,8 +128,12 @@ export default function Assistant() {
 
   return (
     <div>
-      <h1 className="page-title">AI 运维助手 <span className="en">QWAPP COPILOT</span></h1>
-      <p className="page-desc">基于 QWAPP SDK(mock)的集群诊断与 YAML 生成 · 接入真实 SDK 仅需替换 src/ai/qwapp.ts 中的实现</p>
+      <header className="page-head">
+        <div>
+          <h1 className="page-title">AI 运维助手 <span className="en">QWAPP COPILOT</span></h1>
+          <p className="page-desc">基于 QWAPP SDK 的集群诊断与 YAML 生成 · 接入真实 SDK 仅需替换 src/ai/qwapp.ts 中的实现</p>
+        </div>
+      </header>
 
       <div className="assistant-layout">
         <div className="card" style={{ padding: 12 }}>

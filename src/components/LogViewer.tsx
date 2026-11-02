@@ -1,26 +1,52 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { fmtLogTs, logBacklog, nextLogLines, type LogLevel, type LogLine } from '../mock/logs'
+import { fmtLogTs, logBacklog, nextLogLines, type LogLevel, type LogLine } from '../data/mock/logs'
 import type { PodInfo } from '../types'
 
 const levelRank: Record<LogLevel, number> = { DEBUG: 0, INFO: 1, WARN: 2, ERROR: 3 }
 const levelCls: Record<LogLevel, string> = { DEBUG: 'debug', INFO: 'info', WARN: 'warn', ERROR: 'err' }
 
-export default function LogViewer({ pods }: { pods: PodInfo[] }) {
+export default function LogViewer({ pods, fetchLog }: { pods: PodInfo[]; fetchLog?: (pod: PodInfo) => Promise<LogLine[]> }) {
   const [podName, setPodName] = useState(pods[0]?.name ?? '')
   const [minLevel, setMinLevel] = useState<LogLevel>('DEBUG')
   const [query, setQuery] = useState('')
   const [follow, setFollow] = useState(true)
   const [wrap, setWrap] = useState(false)
   const [extra, setExtra] = useState<LogLine[]>([])
+  const [remote, setRemote] = useState<LogLine[] | null>(null)
+  const [remoteErr, setRemoteErr] = useState<string | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const pod = pods.find(p => p.name === podName) ?? pods[0]
-  const backlog = useMemo(() => (pod ? logBacklog(pod) : []), [pod?.name])
+  const backlog = useMemo(() => (pod && !fetchLog ? logBacklog(pod) : []), [pod?.name, fetchLog])
 
   useEffect(() => {
     setExtra([])
     setQuery('')
   }, [podName])
+
+  // 集群日志:首次拉取 + follow 模式轮询
+  useEffect(() => {
+    if (!fetchLog || !pod) return
+    let alive = true
+    const load = () =>
+      fetchLog(pod)
+        .then(lines => {
+          if (alive) {
+            setRemote(lines)
+            setRemoteErr(null)
+          }
+        })
+        .catch(e => {
+          if (alive) setRemoteErr(e instanceof Error ? e.message : String(e))
+        })
+    void load()
+    if (!follow) return () => { alive = false }
+    const t = setInterval(load, 3000)
+    return () => {
+      alive = false
+      clearInterval(t)
+    }
+  }, [fetchLog, pod?.name, follow])
 
   useEffect(() => {
     if (!follow || !pod) return
@@ -30,7 +56,7 @@ export default function LogViewer({ pods }: { pods: PodInfo[] }) {
     return () => clearInterval(t)
   }, [follow, pod?.name, pod?.phase])
 
-  const all = useMemo(() => [...backlog, ...extra], [backlog, extra])
+  const all = useMemo(() => (remote ?? [...backlog, ...extra]), [remote, backlog, extra])
   const shown = useMemo(
     () =>
       all.filter(
@@ -58,6 +84,11 @@ export default function LogViewer({ pods }: { pods: PodInfo[] }) {
   }
 
   if (!pod) return <div className="dim" style={{ padding: 20, textAlign: 'center' }}>该工作负载没有可调度的 Pod</div>
+
+  if (fetchLog && remoteErr)
+    return <div className="dim" style={{ padding: 20, textAlign: 'center' }}>日志读取失败:{remoteErr}</div>
+  if (fetchLog && remote === null)
+    return <div className="dim" style={{ padding: 20, textAlign: 'center' }}>正在拉取 Pod 日志…</div>
 
   const errCount = all.filter(l => l.level === 'ERROR').length
   const warnCount = all.filter(l => l.level === 'WARN').length

@@ -1,6 +1,6 @@
 # K8Q
 
-QWAPP for Kubernetes —— K8S 全生命周期工作台(MVP,全量 mock 数据),可打包为千问办公(QwenWork)`.qwapp` 应用。
+QWAPP for Kubernetes —— K8S 全生命周期工作台(MVP)。内置 Mock 演示数据源,并已支持经本机 node 桥接入**真实 K8S 集群**(kubeconfig 多 context),可打包为千问办公(QwenWork)`.qwapp` 应用。
 
 企业级双主题设计:默认白底,暗夜可选(顶栏切换,持久化);信息密度优先。设计规范见 [DESIGN.md](DESIGN.md)。
 
@@ -11,13 +11,37 @@ QWAPP for Kubernetes —— K8S 全生命周期工作台(MVP,全量 mock 数据)
 | 模块 | 路由 | 说明 |
 | --- | --- | --- |
 | 集群总览 | `/#/dashboard` | 7 格 metric-strip、节点表(内嵌利用率条)、实时事件流、容量趋势 sparkline、Pod 状态分布、命名空间负载 |
-| 工作负载 | `/#/workloads` | 四类资源 tab + 名称/镜像/命名空间过滤,详情抽屉(概览/Pods/日志流/事件/YAML),扩缩容、滚动重启、删除 |
+| 工作负载 | `/#/explorer?group=workloads&kind=Deployment` | 侧栏逐类入口(容器组/无状态/有状态/守护集/副本集/任务/定时任务),名称/镜像/label 过滤,详情抽屉(概览/Pods/日志流/事件/YAML),扩缩容、滚动重启、回滚、删除 |
+| 资源浏览器 | `/#/explorer?gvk=…` | 34 类 GVK 全部收进左侧单轨导航(网络/配置/存储/集群/安全/RBAC/CRD),列表吸顶表头、排序、列设置、CSV 导出、YAML 查看/编辑/删除 |
 | 事件流 | `/#/events` | 全集群事件实时聚合:类型/命名空间/原因/关键字四维过滤、暂停直播、窗口统计 |
 | AI 运维助手 | `/#/assistant` | QWAPP SDK(mock)流式对话:CrashLoopBackOff / OOM / ImagePull 诊断、YAML 生成、快捷诊断 |
 | 发布生命周期 | `/#/releases` | 应用卡片、3 步创建向导、滚动发布进度、版本历史、一键回滚 |
-| 全局搜索 | 顶栏 / `⌘K` | 实时命中工作负载(名称/镜像/命名空间),回车直达过滤态 |
+| 全局搜索 | 顶栏 / `⌘K` | 跨全部资源类型搜索(名称/镜像),↑↓ 选择、回车直达过滤态 |
 | Pod 日志流 | 工作负载抽屉 · 日志 | 终端风格日志查看器:级别/关键字过滤、直播/暂停、自动换行、下载 `.log`,CrashLoop pod 输出崩溃循环栈 |
 | YAML 在线编辑 | 工作负载抽屉 · YAML | 查看高亮 / 编辑(Tab 缩进)/ 行级 Diff 预览 / 校验 / 应用变更——应用后真实写回 store 并触发调和动画与事件 |
+
+## 真实集群接入(M3)
+
+顶栏数据源切换器可在「Mock 演示数据」与 kubeconfig 中的各 context 之间切换。集群模式下:
+
+- 34 类 GVK、工作负载富面板、事件流按 5s 轮询真实 API;列表/详情/侧栏导航计数均为规范化后的真实对象
+- 操作矩阵走真实 API 语义:扩缩容(PATCH scale)、滚动重启(restartedAt 注解)、删除(可选 gracePeriod=0 强删)、驱逐(eviction 子资源,**尊重 PDB,额度为 0 时上游 429 并 toast 透传**)、CronJob 触发(按 jobTemplate 组装 Job POST)、挂起/恢复、回滚(从 ReplicaSet 历史推导 revision 后回写 podTemplate)
+- Pod 日志走 `pods/log` 接口,级别解析 + 直播轮询;YAML 编辑以 merge-patch 应用;YAML 创建逐文档 POST
+- **metrics.k8s.io 实时用量**(M4):Pod/工作负载的 CPU(cores)/内存(Mi)、节点利用率条、Dashboard 总览与容量趋势均来自 metrics API(Quantity 解析:cpu `m`、memory `Ki/Mi/Gi/Ti`);metrics-server 不存在时静默降级为 `—`
+- Dashboard 在集群模式下由真实 nodes/pods/workloads/events/metrics 驱动(容量趋势随轮询逐步积累趋势点);发布生命周期页为 Helm/Argo 演示域,集群模式下明确标注「演示数据」
+
+架构:`qwapp/main-bridge.mjs` 在千问办公 runtime.main(node 进程)内启动 `127.0.0.1:47831-47845` REST 桥——`kubectl config view --raw -o json` 读多 context 配置,按 context 携带客户端证书/token/basic 转发 K8S API 并放行 CORS;视图层 `src/data/kube/` 负责发现桥端口、规范化真实 JSON(扁平 K8sObject)、快照轮询存储与 KubeProvider(与 MockProvider 同签名,页面零感知切换)。
+
+开发/验证(无需真实集群):
+
+```bash
+node scripts/mock-apiserver.mjs --port 47880 &            # 真实形状的 K8S API 仿真器
+K8Q_API_SERVER=http://127.0.0.1:47880 node qwapp/main-bridge.mjs &   # 桥指向仿真器
+npm run dev                                               # 顶栏切「集群 · dev」
+node scripts/k8s-smoke.mjs                                # 有真实集群时:node qwapp/main-bridge.mjs & 后执行冒烟
+```
+
+注意:视图 → 桥的跨源 fetch(`qwapp://` → `http://127.0.0.1`)在千问办公 webview 内的放行情况需在真机确认;不可达时应用自动回退 Mock 并提示,不影响其余功能。
 
 ## 界面预览
 
@@ -45,16 +69,27 @@ npm run build    # 产物输出到 dist/
 
 ```bash
 ./qwapp/build.sh
-# 产物:qwapp/dist/io.kudig.k8q-0.3.0.qwapp(+ .sha256.json 摘要)
+# 产物:qwapp/out/io.kudig.k8q-0.3.0.qwapp(+ .sha256.json 摘要)
 ```
 
 安装方式:
-1. 把 `.qwapp` 文件**拖入 QwenWork 桌面端窗口**;
-2. 或在 QwenWork 对话中说:`帮我安装这个 qwapp:<文件绝对路径>`。
+1. 把 `.qwapp` 文件**拖入 QwenWork 桌面端窗口**(或双击,由默认处理器打开),在「安装本地应用」弹窗中确认;
+2. 或在 QwenWork 对话中说:`帮我安装这个 qwapp:<文件绝对路径>`(需 Agent 积分)。
 
-> 若返回 `QWAPP runtime is not ready (disabled)`,需先在 QwenWork 设置中开启「开发者模式 / QWAPP 运行时」。
+安装后出现在侧边栏「应用」分区,点击即挂载工作台视图。
 
-包内容(`qwapp/`):`manifest.json`(qwapp-v3 清单)、`instructions.md`(K8Q 运维助手系统指令)、`skills/`(crashloop-diagnosis、release-runbook)、`views/workbench.html`(工作台单文件视图,由 vite singlefile 构建生成)。
+包内容(`qwapp/`,与 QwenWork 1.4 运行时校验规则对齐,manifestVersion=2):
+
+```
+manifest.json                  # type=qwenwork-app,含 sdk/runtime/ui/capabilities/mainAgent
+dist/main.mjs                  # runtime.main 入口(占位)
+dist/tool-catalog.json         # kind=qwenwork.app-tool-catalog/v1
+dist/ui/index.html             # 工作台单文件视图(vite singlefile 构建,含 UI bridge 握手)
+resources/agent/instructions.md
+resources/agent/skills/*/SKILL.md
+```
+
+视图挂载握手:`index.html` 内嵌 `qwenwork.ui-bridge/v1` 的 hello/ready 实现(浏览器直开时自动跳过)。
 
 ## 目录结构
 

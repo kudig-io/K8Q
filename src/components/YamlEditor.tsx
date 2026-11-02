@@ -1,6 +1,4 @@
 import { useMemo, useState } from 'react'
-import { applyYaml } from '../mock/store'
-import type { Workload } from '../types'
 import { YamlView } from './common'
 
 type DiffRow = { type: 'same' | 'add' | 'del'; text: string }
@@ -47,7 +45,7 @@ function validateYaml(text: string): string[] {
   return errors
 }
 
-export default function YamlEditor({ workload, original }: { workload: Workload; original: string }) {
+export default function YamlEditor({ original, onApply }: { original: string; onApply: (text: string) => string[] }) {
   const [mode, setMode] = useState<'view' | 'edit' | 'diff'>('view')
   const [draft, setDraft] = useState(original)
   const [applied, setApplied] = useState<string[]>([])
@@ -64,7 +62,7 @@ export default function YamlEditor({ workload, original }: { workload: Workload;
   }
 
   function apply() {
-    const changes = applyYaml(workload.id, draft)
+    const changes = onApply(draft)
     setApplied(changes)
     setMode('view')
   }

@@ -1,4 +1,4 @@
-import type { PodInfo } from '../types'
+import type { PodInfo } from '../../types'
 
 export type LogLevel = 'DEBUG' | 'INFO' | 'WARN' | 'ERROR'
 

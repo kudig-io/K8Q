@@ -1,0 +1,7 @@
+node_modules/
+dist/
+qwapp/dist/
+qwapp/out/
+.qoder/
+.DS_Store
+*.tsbuildinfo
