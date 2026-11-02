@@ -6,7 +6,7 @@ import { byId, entryGvkRef, entryId, registry, richWorkloadKinds, type GvkEntry 
 import { relTime } from './common'
 import CreateResource from './CreateResource'
 
-const APP_VERSION = 'v0.8.0'
+const APP_VERSION = 'v0.8.1'
 
 function HelmIcon({ size = 22 }: { size?: number }) {
   return (

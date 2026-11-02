@@ -3,7 +3,7 @@
   "type": "qwenwork-app",
   "id": "io.kudig.k8q",
   "name": "K8Q K8S 全生命周期工作台",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "K8Q — QWAPP for Kubernetes。专业 K8s 控制台:左侧单轨导航收纳 34 类 GVK 与全部功能页,全局资源搜索(⌘K),内置 Mock 演示源,并经本机 node 桥(kubeconfig 多 context、客户端证书/token)接入真实 K8S 集群——工作负载操作矩阵(扩缩容/滚动重启/回滚/驱逐与强删/CronJob 触发与挂起)、metrics.k8s.io 实时用量(CPU/内存,Pod/工作负载/节点/Dashboard)、Pod 日志流、事件流、label 过滤/多列排序/列显隐/CSV 导出、YAML 编辑与导入创建,以及 AI 运维助手。发布页为演示数据。",
   "author": "K8Q Team",
   "permissions": [],
@@ -18,8 +18,8 @@
       "entry": "dist/main.mjs",
       "executionMode": "node",
       "scope": "installation",
-      "activation": "onDemand",
-      "retention": "idle"
+      "activation": "startup",
+      "retention": "resident"
     }
   },
   "ui": {
@@ -41,7 +41,7 @@
   "mainAgent": {
     "kind": "qwenwork-main-agent",
     "id": "k8q-ops-agent",
-    "version": "0.8.0",
+    "version": "0.8.1",
     "tools": "app",
     "instructions": "resources/agent/instructions.md",
     "skills": {

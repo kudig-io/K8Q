@@ -17,6 +17,29 @@ const APP_ID = 'io.kudig.k8q'
 const PORT_RANGE = [47831, 47845]
 const log = (...a) => console.log('[k8q-bridge]', ...a)
 
+// QwenWork App Main 契约:worker 导入本模块后要求 default 导出
+// { kind:'qwenwork-app-main', contract, commands, tools, ... }。
+// 契约以打包内 dist/tool-catalog.json 为准;开发模式回退到内置同构定义。
+const CONTRACT_FALLBACK = {
+  kind: 'qwenwork-app-contract',
+  id: 'io.kudig.k8q.contract',
+  version: '1.0.0',
+  commands: {},
+  events: {},
+}
+
+function loadContract() {
+  for (const rel of ['./tool-catalog.json', './dist/tool-catalog.json']) {
+    try {
+      const catalog = JSON.parse(fs.readFileSync(new URL(rel, import.meta.url), 'utf8'))
+      if (catalog?.contract?.kind === 'qwenwork-app-contract') return catalog.contract
+    } catch {
+      /* 回退到内置契约 */
+    }
+  }
+  return CONTRACT_FALLBACK
+}
+
 // ── kubeconfig 读取 ────────────────────────────────────────
 function loadKubeconfig() {
   const envServer = process.env.K8Q_API_SERVER
@@ -118,12 +141,18 @@ function proxyK8s(kube, contextName, req, res, apiPath) {
 }
 
 // ── HTTP 服务 ──────────────────────────────────────────────
+let bridgeServer = null
+let bridgeStarted = false
+
 function startBridge(kube) {
   const fixedPort = process.env.K8Q_BRIDGE_PORT ? Number(process.env.K8Q_BRIDGE_PORT) : undefined
   const ports = fixedPort ? [fixedPort] : range(PORT_RANGE[0], PORT_RANGE[1])
 
   const tryListen = i => {
-    if (i >= ports.length) throw new Error(`桥接端口 ${PORT_RANGE[0]}-${PORT_RANGE[1]} 全部被占用`)
+    if (i >= ports.length) {
+      log(`桥接端口 ${PORT_RANGE[0]}-${PORT_RANGE[1]} 全部被占用,本次跳过启动`)
+      return
+    }
     const port = ports[i]
     const server = http.createServer((req, res) => {
       const cors = { 'access-control-allow-origin': '*', 'access-control-allow-methods': 'GET,POST,PUT,PATCH,DELETE,OPTIONS', 'access-control-allow-headers': 'Content-Type,X-K8Q-Context' }
@@ -156,9 +185,10 @@ function startBridge(kube) {
 
     server.on('error', err => {
       if (err.code === 'EADDRINUSE') tryListen(i + 1)
-      else throw err
+      else log('桥接启动失败:', err.message)
     })
     server.listen(port, '127.0.0.1', () => {
+      bridgeServer = server
       log(`桥接已启动 http://127.0.0.1:${port} (mode=${kube.mode}, contexts=${kube.contexts.length})`)
       announce(port, kube)
     })
@@ -189,18 +219,54 @@ function announce(port, kube) {
   }
 }
 
-try {
-  const kube = loadKubeconfig()
-  startBridge(kube)
-} catch (e) {
-  // 降级:仍启动一个仅 /health 的桥,视图可探测到 kubectl/kubeconfig 问题并给出准确提示
-  log('启动受限:', e.message)
-  startBridge({
+function unavailableKube(error) {
+  return {
     mode: 'unavailable',
-    error: e.message,
+    error,
     contexts: [],
     defaultContext: undefined,
     clusterByName: new Map(),
     userByName: new Map(),
-  })
+  }
 }
+
+function ensureBridge() {
+  if (bridgeStarted) return
+  bridgeStarted = true
+  try {
+    startBridge(loadKubeconfig())
+  } catch (e) {
+    // 降级:仍启动一个仅 /health 的桥,视图可探测到 kubectl/kubeconfig 问题并给出准确提示
+    log('启动受限:', e.message)
+    startBridge(unavailableKube(e.message))
+  }
+}
+
+function stopBridge() {
+  if (!bridgeServer) return
+  const server = bridgeServer
+  bridgeServer = null
+  bridgeStarted = false
+  server.close()
+  server.closeAllConnections?.()
+  log('桥接已停止')
+}
+
+// QwenWork App Main 定义:worker bootstrap 会校验该默认导出;
+// 桥在 worker 就绪后启动,避免 kubectl 读取阻塞启动握手。
+const appMain = {
+  kind: 'qwenwork-app-main',
+  contract: loadContract(),
+  commands: {},
+  tools: [],
+  onActivate() {
+    ensureBridge()
+  },
+  onDeactivate() {
+    stopBridge()
+  },
+}
+
+export default appMain
+
+setImmediate(ensureBridge)

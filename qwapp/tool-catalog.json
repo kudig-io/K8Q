@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "kind": "qwenwork.app-tool-catalog/v1",
+  "appId": "io.kudig.k8q",
+  "tools": [],
+  "contract": {
+    "kind": "qwenwork-app-contract",
+    "id": "io.kudig.k8q.contract",
+    "version": "1.0.0",
+    "commands": {},
+    "events": {}
+  }
+}

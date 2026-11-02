@@ -37,9 +37,11 @@ echo "🔨 构建工作台视图(vite singlefile)…"
 cp "$ROOT_DIR/dist/index.html" "$SCRIPT_DIR/dist/ui/index.html"
 echo "   dist/ui/index.html = $(stat -f%z "$SCRIPT_DIR/dist/ui/index.html") bytes"
 
-# 1.5 node 桥(runtime.main 入口)
+# 1.5 node 桥(runtime.main 入口)+ App Contract 工具目录
 cp "$SCRIPT_DIR/main-bridge.mjs" "$SCRIPT_DIR/dist/main.mjs"
+cp "$SCRIPT_DIR/tool-catalog.json" "$SCRIPT_DIR/dist/tool-catalog.json"
 echo "   dist/main.mjs      = $(stat -f%z "$SCRIPT_DIR/dist/main.mjs") bytes"
+echo "   tool-catalog       = $SCRIPT_DIR/dist/tool-catalog.json"
 
 # 2. 按 QwenWork 运行时规则校验 manifest 必备字段与产物引用
 node -e "
