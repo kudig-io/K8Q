@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "shots": "node scripts/shots.mjs",
-    "shots:docs": "node scripts/docs-shots.mjs"
+    "shots:docs": "node scripts/docs-shots.mjs",
+    "verify:main": "node scripts/verify-main-contract.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",

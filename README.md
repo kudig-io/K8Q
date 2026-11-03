@@ -39,6 +39,7 @@ node scripts/mock-apiserver.mjs --port 47880 &            # 真实形状的 K8S 
 K8Q_API_SERVER=http://127.0.0.1:47880 node qwapp/main-bridge.mjs &   # 桥指向仿真器
 npm run dev                                               # 顶栏切「集群 · dev」
 node scripts/k8s-smoke.mjs                                # 有真实集群时:node qwapp/main-bridge.mjs & 后执行冒烟
+npm run verify:main                                       # 校验 QwenWork App Main 入口契约(worker 默认导出/契约/命令)
 ```
 
 注意:视图 → 桥的跨源 fetch(`qwapp://` → `http://127.0.0.1`)在千问办公 webview 内的放行情况需在真机确认;不可达时应用自动回退 Mock 并提示,不影响其余功能。
